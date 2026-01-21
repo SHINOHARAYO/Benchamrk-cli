@@ -1,11 +1,11 @@
-# Benchmark CLI
+# Velocicode
 
 A command-line interface tool to benchmark the execution speed of various programming languages (Python, C++, Rust, Go, JavaScript) on standard algorithms.
 
 ## Installation
 
 ```bash
-pip install benchmark-cli
+pip install velocicode
 ```
 
 ## Platform Support
@@ -19,20 +19,20 @@ pip install benchmark-cli
 Run the interactive mode:
 
 ```bash
-benchmark-cli
+velocicode
 ```
 
 Or use command line arguments:
 
 ```bash
 # Run all
-benchmark-cli run
+velocicode run
 
 # Filter by algorithm
-benchmark-cli run --filter-algo matrix_mul
+velocicode run --filter-algo matrix_mul
 
 # Filter by language
-benchmark-cli run --filter-lang python,cpp
+velocicode run --filter-lang python,cpp
 ```
 
 ## Supported Benchmarks
@@ -54,4 +54,4 @@ benchmark-cli run --filter-lang python,cpp
   - `go` (for Go)
   - `node` (for JavaScript)
 
-Run `benchmark-cli check` to see which compilers are missing on your system. The tool will simply skip languages that are not installed.
+Run `velocicode check` to see which compilers are missing on your system. The tool will simply skip languages that are not installed.

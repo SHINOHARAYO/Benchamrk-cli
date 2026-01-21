@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="benchmark-cli",
+    name="velocicode",
     version="0.1.0",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "benchmark-cli=benchmark_cli.main:main",
+            "velocicode=velocicode.main:main",
         ],
     },
 )

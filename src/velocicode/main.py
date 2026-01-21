@@ -49,7 +49,7 @@ def discover_benchmarks():
     return [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
 
 def main():
-    parser = argparse.ArgumentParser(description="Programming Language Speed Benchmark Tool")
+    parser = argparse.ArgumentParser(description="Velocicode - Programming Language Speed Benchmark Tool")
     parser.add_argument("action", choices=["run", "list", "check"], help="Action to perform")
     parser.add_argument("--filter-algo", help="Filter by specific algorithm name")
     parser.add_argument("--filter-lang", help="Filter by specific languages (comma separated)")
@@ -130,7 +130,7 @@ def main():
         print_table(results)
 
 def interactive_menu():
-    print("\nWelcome to the Benchmark Tool!")
+    print("\nWelcome to Velocicode!")
     print("1. Run All Benchmarks")
     print("2. Run Specific Algorithm")
     print("3. Run Specific Language")

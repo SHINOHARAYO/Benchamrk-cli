@@ -1,2 +1,2 @@
-include src/benchmark_cli/config.yaml
-recursive-include src/benchmark_cli/benchmarks *
+include src/velocicode/config.yaml
+recursive-include src/velocicode/benchmarks *
