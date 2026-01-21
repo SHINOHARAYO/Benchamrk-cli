@@ -22,11 +22,12 @@ func matMul(a, b [][]float64, n int) [][]float64 {
 	c := make([][]float64, n)
 	for i := range c {
 		c[i] = make([]float64, n)
-		for i := 0; i < n; i++ {
-			for k := 0; k < n; k++ {
-				for j := 0; j < n; j++ {
-					c[i][j] += a[i][k] * b[k][j]
-				}
+	}
+	
+	for i := 0; i < n; i++ {
+		for k := 0; k < n; k++ {
+			for j := 0; j < n; j++ {
+				c[i][j] += a[i][k] * b[k][j]
 			}
 		}
 	}
