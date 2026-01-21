@@ -1,6 +1,22 @@
-# Velocicode
+# Velocicode 🚀
 
-A command-line interface tool to benchmark the execution speed of various programming languages (Python, C++, Rust, Go, JavaScript) on standard algorithms.
+**Velocicode** is a high-performance command-line tool for benchmarking programming language speeds. It allows you to run standard algorithms across multiple languages and compare their execution time with professional, interactive reports.
+
+## Features ✨
+
+- **Multi-Language Support**: Benchmarks **Python**, **C++**, **Rust**, **Go**, and **JavaScript** (Node.js).
+- **Standard Algorithms**:
+  - `fibonacci` (Recursion intensity)
+  - `matrix_mul` (Floating point & Cache)
+  - `quicksort` (Memory & Sorting)
+  - `primes` (Sieve of Eratosthenes)
+- **Premium UI**:
+  - Beautiful terminal output using the **Rich** library.
+  - Rankings with Medals (🥇 🥈 🥉).
+  - Relative Speed comparisons (e.g., `1.00x` vs `45.9x`).
+- **Data Export**:
+  - **JSON**: Raw data export for analysis.
+  - **HTML**: Interactive reports with **Charts** for presentations.
 
 ## Installation
 
@@ -8,50 +24,52 @@ A command-line interface tool to benchmark the execution speed of various progra
 pip install velocicode
 ```
 
-## Platform Support
-
-- **Linux**: Fully supported.
-- **macOS**: Fully supported (requires Xcode Command Line Tools for compilers).
-- **Windows**: Supported via **WSL2** (Windows Subsystem for Linux). Native Windows support is currently experimental.
-
 ## Usage
 
-Run the interactive mode:
+### 1. Run Benchmarks
+
+Run all benchmarks with default settings:
 
 ```bash
-velocicode
-```
-
-Or use command line arguments:
-
-```bash
-# Run all
 velocicode run
-
-# Filter by algorithm
-velocicode run --filter-algo matrix_mul
-
-# Filter by language
-velocicode run --filter-lang python,cpp
 ```
 
-## Supported Benchmarks
+Filter by specific algorithm or language:
 
-- **Fibonacci**
-- **Matrix Multiplication**
-- **Quick Sort**
+```bash
+# Run only Matrix Multiplication in Rust and Go
+velocicode run --filter-algo matrix_mul --filter-lang rust,go
+```
+
+### 2. Generate Reports 📊
+
+Export results to JSON or generate a visual HTML report:
+
+```bash
+velocicode run --html report.html --json results.json
+```
+
+Open `report.html` in your browser to see interactive bar charts!
+
+### 3. Check Compilers
+
+Velocicode relies on system compilers. Check what you have installed:
+
+```bash
+velocicode check
+```
 
 ## Requirements
 
 > [!IMPORTANT]
-> This tool requires external compilers to be installed on your system. `pip` will **not** install these for you.
+> This tool requires external compilers. `pip` installs the runner, but you need the languages installed:
 
-- Python 3.7+
-- **System Compilers**:
-  - `python3` (for Python)
-  - `g++` (for C++)
-  - `rustc` (for Rust)
-  - `go` (for Go)
-  - `node` (for JavaScript)
+- **Python 3.7+**
+- `g++` (for C++)
+- `rustc` (for Rust)
+- `go` (for Go)
+- `node` (for JavaScript)
 
-Run `velocicode check` to see which compilers are missing on your system. The tool will simply skip languages that are not installed.
+## License
+
+MIT
