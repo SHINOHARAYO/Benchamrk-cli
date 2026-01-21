@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Velocicode"
-version = "0.3.0"
+version = "0.4.0"
 description = "A CLI tool for programming language speed benchmarks"
 authors = [
   { name="Code Agent", email="agent@example.com" },

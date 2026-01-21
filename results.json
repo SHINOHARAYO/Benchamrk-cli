@@ -1,0 +1,42 @@
+[
+  {
+    "benchmark": "fibonacci",
+    "language": "go",
+    "mean": 0.05486774444580078,
+    "min": 0.053964853286743164,
+    "max": 0.0557706356048584,
+    "count": 2
+  },
+  {
+    "benchmark": "fibonacci",
+    "language": "rust",
+    "mean": 0.03827083110809326,
+    "min": 0.03609013557434082,
+    "max": 0.0404515266418457,
+    "count": 2
+  },
+  {
+    "benchmark": "fibonacci",
+    "language": "cpp",
+    "mean": 0.020730972290039062,
+    "min": 0.019542932510375977,
+    "max": 0.02191901206970215,
+    "count": 2
+  },
+  {
+    "benchmark": "fibonacci",
+    "language": "javascript",
+    "mean": 0.23995482921600342,
+    "min": 0.23699712753295898,
+    "max": 0.24291253089904785,
+    "count": 2
+  },
+  {
+    "benchmark": "fibonacci",
+    "language": "python",
+    "mean": 1.109865427017212,
+    "min": 1.1034064292907715,
+    "max": 1.1163244247436523,
+    "count": 2
+  }
+]

@@ -60,6 +60,8 @@ def main():
     parser.add_argument("--filter-algo", help="Filter by specific algorithm name")
     parser.add_argument("--filter-lang", help="Filter by specific languages (comma separated)")
     parser.add_argument("--iter", type=int, default=5, help="Number of iterations per benchmark")
+    parser.add_argument("--json", help="Export results to a JSON file")
+    parser.add_argument("--html", help="Export results to an interactive HTML report")
     
     args = parser.parse_args()
     
@@ -144,6 +146,17 @@ def main():
                     })
 
         print_table(results)
+        
+        if args.json:
+            import json
+            with open(args.json, 'w') as f:
+                json.dump(results, f, indent=2)
+            rprint(f"[green]JSON results exported to:[/green] {args.json}")
+            
+        if args.html:
+            from .report_generator import generate_html_report
+            generate_html_report(results, args.html)
+            rprint(f"[green]HTML report generated at:[/green] {args.html}")
 
 def interactive_menu():
     rprint(Panel.fit("[bold cyan]Velocicode[/bold cyan]\n[dim]High-Performance Benchmark CLI[/dim]", title="Welcome", border_style="blue"))

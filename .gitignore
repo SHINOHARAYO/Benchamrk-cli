@@ -13,3 +13,6 @@ runner_*
 *.exe
 *.o
 *.class
+
+# github stuffs
+.github/
