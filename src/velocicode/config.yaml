@@ -8,7 +8,7 @@ languages:
     compile: "rustc -O {source} -o {out}"
     run: "{out}"
   javascript:
-    run: "node main.js"
+    run: "node {source}"
 
   java:
     compile: "javac Main.java"

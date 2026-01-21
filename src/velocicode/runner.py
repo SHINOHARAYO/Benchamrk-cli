@@ -32,7 +32,9 @@ class BenchmarkRunner:
             if compile_cmd_tpl:
                 cmd = compile_cmd_tpl.format(source=source_path, out=bin_path)
                 log(f"Compiling...")
-                subprocess.check_call(cmd, shell=True)
+                # For Java and C#, we need to run compile in the source directory
+                cwd = os.path.dirname(source_path) if language in ['java', 'csharp'] else None
+                subprocess.check_call(cmd, shell=True, cwd=cwd)
             else:
                 # No compilation needed
                 pass
@@ -49,7 +51,9 @@ class BenchmarkRunner:
             log(f"Running iteration {i+1}/{iterations}...")
             start = time.time()
             try:
-                subprocess.check_call(cmd, shell=True, stdout=subprocess.DEVNULL)
+                # For Java and C#, we need to run in the source directory
+                cwd = os.path.dirname(source_path) if language in ['java', 'csharp'] else None
+                subprocess.check_call(cmd, shell=True, stdout=subprocess.DEVNULL, cwd=cwd)
                 duration = time.time() - start
                 times.append(duration)
             except subprocess.CalledProcessError as e:
