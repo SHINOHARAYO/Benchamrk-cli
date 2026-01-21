@@ -1,0 +1,16 @@
+languages:
+  python:
+    run: "python3 {source}"
+  cpp:
+    compile: "g++ -O3 -std=c++11 {source} -o {out}"
+    run: "{out}"
+  rust:
+    compile: "rustc -O {source} -o {out}"
+    run: "{out}"
+  javascript:
+    run: "node {source}"
+  go:
+    compile: "go build -o {out} {source}"
+    run: "{out}"
+dependencies:
+  rust: [rand]

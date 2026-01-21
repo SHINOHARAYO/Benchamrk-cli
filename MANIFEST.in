@@ -1,0 +1,2 @@
+include src/benchmark_cli/config.yaml
+recursive-include src/benchmark_cli/benchmarks *
