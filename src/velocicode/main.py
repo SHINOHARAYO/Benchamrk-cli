@@ -43,6 +43,8 @@ def check_dependencies(config, verbose=True):
         else:
             if verbose:
                 rprint(f"[red]✘[/red] {lang:<12} (Missing: [bold]{program}[/bold])")
+                if lang == 'java' and shutil.which('java'):
+                    rprint(f"  [dim]Tip: You have 'java' but not 'javac'. Install the JDK package (e.g. java-latest-openjdk-devel).[/dim]")
             missing_langs.add(lang)
             
     return valid_langs, missing_langs

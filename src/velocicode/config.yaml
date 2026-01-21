@@ -16,7 +16,7 @@ languages:
 
   csharp:
     # Assumes a .csproj exists in the directory
-    compile: "dotnet build -c Release"
+    compile: "dotnet build -c Release --verbosity quiet"
     run: "dotnet run -c Release --no-build"
   go:
     compile: "go build -o {out} {source}"

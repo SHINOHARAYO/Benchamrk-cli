@@ -69,7 +69,7 @@ velocicode check
 - `rustc` (for Rust)
 - `go` (for Go)
 - `node` (for JavaScript)
-- `javac` (for Java)
+- `javac` (for Java - **JDK required**, e.g. `java-latest-openjdk-devel`)
 - `dotnet` (for C#)
 
 ## License
