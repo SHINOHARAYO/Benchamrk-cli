@@ -6,9 +6,15 @@ from glob import glob
 import shutil
 from .runner import BenchmarkRunner
 from .reporter import print_table
+from rich.console import Console
+from rich.panel import Panel
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich import print as rprint
+
+console = Console()
 
 def check_dependencies(config):
-    print("Checking System Dependencies:")
+    rprint(Panel("Checking System Dependencies", style="bold blue"))
     languages = config.get('languages', {})
     
     for lang, cfg in languages.items():
@@ -16,7 +22,7 @@ def check_dependencies(config):
         # If 'compile' exists, check the compiler. Else check 'run'.
         cmd_str = cfg.get('compile') or cfg.get('run')
         if not cmd_str:
-            print(f"[UNKNOWN] {lang}: No command defined")
+            rprint(f"[yellow]WARN[/yellow] {lang}: No command defined")
             continue
             
         # simpler parsing: assume command is the first word
@@ -24,9 +30,9 @@ def check_dependencies(config):
         
         path = shutil.which(program)
         if path:
-            print(f"[PASS] {lang:<12} (Found: {program})")
+            rprint(f"[green]✔[/green] {lang:<12} (Found: [cyan]{program}[/cyan])")
         else:
-            print(f"[FAIL] {lang:<12} (Missing: {program})")
+            rprint(f"[red]✘[/red] {lang:<12} (Missing: [bold]{program}[/bold])")
 
 
 def get_base_dir():
@@ -83,22 +89,17 @@ def main():
 
     if args.action == "run":
         base_dir = os.path.join(get_base_dir(), "benchmarks")
+        
+        # Collect all tasks first
+        tasks_to_run = []
         for algo in algos:
             algo_dir = os.path.join(base_dir, algo)
-            # Find language directories
             lang_dirs = [d for d in os.listdir(algo_dir) if os.path.isdir(os.path.join(algo_dir, d)) and d != 'bin']
             
             for lang in lang_dirs:
                 if target_langs and lang not in target_langs:
                     continue
                 
-                # Assume main entry file exists. Logic could be improved here.
-                # Try main.py, main.cpp, main.rs, main.go, main.js
-                # Or just look for any file.
-                # For simplicity, let's look for known extensions based on config
-                
-                src_file = None
-                # naive helper mapping
                 ext_map = {
                     'python': 'main.py',
                     'cpp': 'main.cpp',
@@ -106,19 +107,33 @@ def main():
                     'go': 'main.go',
                     'javascript': 'main.js'
                 }
-                
                 expected_file = ext_map.get(lang)
                 if not expected_file:
-                    print(f"Skipping unknown structure for {lang} in {algo}")
                     continue
-                    
                 full_path = os.path.join(algo_dir, lang, expected_file)
                 if not os.path.exists(full_path):
-                    print(f"Source file missing: {full_path}")
                     continue
+                tasks_to_run.append((algo, lang, full_path))
 
-                print(f"Running {algo} - {lang}...")
+        if not tasks_to_run:
+            rprint("[yellow]No benchmarks found to run.[/yellow]")
+            return
+
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True
+        ) as progress:
+            for algo, lang, full_path in tasks_to_run:
+                task_id = progress.add_task(f"Running [cyan]{algo}[/cyan] - [magenta]{lang}[/magenta]...", total=None)
+                
+                # Suppress stdout from runner to keep UI clean, unless there's an error?
+                # For now, let's just run it. The runner might print "Compiling..."
+                # We can capture that if we wanted to be very clean, but let's leave it simple for now.
+                
                 stats = runner.run_benchmark(lang, full_path, iterations=args.iter)
+                progress.remove_task(task_id)
+                
                 if stats:
                     results.append({
                         'benchmark': algo,
@@ -126,11 +141,10 @@ def main():
                         **stats
                     })
 
-        print("\n\n=== Final Results ===")
         print_table(results)
 
 def interactive_menu():
-    print("\nWelcome to Velocicode!")
+    rprint(Panel.fit("[bold cyan]Velocicode[/bold cyan]\n[dim]High-Performance Benchmark CLI[/dim]", title="Welcome", border_style="blue"))
     print("1. Run All Benchmarks")
     print("2. Run Specific Algorithm")
     print("3. Run Specific Language")
@@ -143,7 +157,7 @@ def interactive_menu():
         return ["run"]
     elif choice == '2':
         algos = discover_benchmarks()
-        print("\nAvailable Algorithms:")
+        print("\n[bold]Available Algorithms:[/bold]")
         for i, a in enumerate(algos):
             print(f"{i+1}. {a}")
         idx = input("Select algorithm number: ").strip()

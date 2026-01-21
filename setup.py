@@ -8,6 +8,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "pyyaml",
+        "rich>=13.0.0",
     ],
     entry_points={
         "console_scripts": [
