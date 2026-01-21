@@ -5,11 +5,9 @@
 ## Features ✨
 
 - **Multi-Language Support**: Benchmarks **Python**, **C++**, **Rust**, **Go**, and **JavaScript** (Node.js).
-- **Standard Algorithms**:
-  - `fibonacci` (Recursion intensity)
-  - `matrix_mul` (Floating point & Cache)
-  - `quicksort` (Memory & Sorting)
-  - `primes` (Sieve of Eratosthenes)
+- **Smart Execution**:
+  - **System Info**: Auto-detects your CPU, RAM, and OS.
+  - **Dependency Check**: Automatically checks for compilers and skips missing languages.
 - **Premium UI**:
   - Beautiful terminal output using the **Rich** library.
   - Rankings with Medals (🥇 🥈 🥉).
@@ -33,6 +31,8 @@ Run all benchmarks with default settings:
 ```bash
 velocicode run
 ```
+
+The tool will display your system information and check if you have the necessary compilers. If some are missing, it will ask if you want to proceed with the available ones.
 
 Filter by specific algorithm or language:
 

@@ -6,23 +6,30 @@ from glob import glob
 import shutil
 from .runner import BenchmarkRunner
 from .reporter import print_table
+from .system_info import get_system_info
 from rich.console import Console
 from rich.panel import Panel
+from rich.prompt import Confirm
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich import print as rprint
 
 console = Console()
 
-def check_dependencies(config):
-    rprint(Panel("Checking System Dependencies", style="bold blue"))
+def check_dependencies(config, verbose=True):
+    if verbose:
+        rprint(Panel("Checking System Dependencies", style="bold blue"))
+    
     languages = config.get('languages', {})
+    valid_langs = set()
+    missing_langs = set()
     
     for lang, cfg in languages.items():
         # Determine the command to check
         # If 'compile' exists, check the compiler. Else check 'run'.
         cmd_str = cfg.get('compile') or cfg.get('run')
         if not cmd_str:
-            rprint(f"[yellow]WARN[/yellow] {lang}: No command defined")
+            if verbose:
+                rprint(f"[yellow]WARN[/yellow] {lang}: No command defined")
             continue
             
         # simpler parsing: assume command is the first word
@@ -30,9 +37,15 @@ def check_dependencies(config):
         
         path = shutil.which(program)
         if path:
-            rprint(f"[green]✔[/green] {lang:<12} (Found: [cyan]{program}[/cyan])")
+            if verbose:
+                rprint(f"[green]✔[/green] {lang:<12} (Found: [cyan]{program}[/cyan])")
+            valid_langs.add(lang)
         else:
-            rprint(f"[red]✘[/red] {lang:<12} (Missing: [bold]{program}[/bold])")
+            if verbose:
+                rprint(f"[red]✘[/red] {lang:<12} (Missing: [bold]{program}[/bold])")
+            missing_langs.add(lang)
+            
+    return valid_langs, missing_langs
 
 
 def get_base_dir():
@@ -90,6 +103,25 @@ def main():
         return
 
     if args.action == "run":
+        # 1. Display System Info
+        sys_info = get_system_info()
+        info_text = f"""
+[bold]OS:[/bold]   {sys_info['os']}
+[bold]CPU:[/bold]  {sys_info['cpu']}
+[bold]Arch:[/bold] {sys_info['arch']}
+[bold]RAM:[/bold]  {sys_info['ram']}
+"""
+        rprint(Panel(info_text.strip(), title="System Information", border_style="green"))
+
+        # 2. Check Dependencies
+        valid_langs, missing_langs = check_dependencies(config, verbose=False)
+        
+        if missing_langs:
+            rprint(f"[yellow]Warning: The following languages are missing:[/yellow] [bold]{', '.join(missing_langs)}[/bold]")
+            if not Confirm.ask("Do you want to continue running valid languages only?"):
+                rprint("[red]Aborted.[/red]")
+                return
+
         base_dir = os.path.join(get_base_dir(), "benchmarks")
         
         # Collect all tasks first
@@ -100,6 +132,10 @@ def main():
             
             for lang in lang_dirs:
                 if target_langs and lang not in target_langs:
+                    continue
+                
+                # SKIP if missing
+                if lang in missing_langs:
                     continue
                 
                 ext_map = {
