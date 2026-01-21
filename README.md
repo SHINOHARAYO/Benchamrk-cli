@@ -5,6 +5,11 @@
 ## Features ✨
 
 - **Multi-Language Support**: Benchmarks **Python**, **C++**, **Rust**, **Go**, **JavaScript** (Node.js), **Java**, and **C#** (.NET).
+- **Standard Algorithms**:
+  - `fibonacci` (Recursion intensity)
+  - `matrix_mul` (Floating point & Cache)
+  - `quicksort` (Memory & Sorting)
+  - `primes` (Sieve of Eratosthenes)
 - **Smart Execution**:
   - **System Info**: Auto-detects your CPU, RAM, and OS.
   - **Dependency Check**: Automatically checks for compilers and skips missing languages.
