@@ -125,13 +125,15 @@ def main():
             transient=True
         ) as progress:
             for algo, lang, full_path in tasks_to_run:
-                task_id = progress.add_task(f"Running [cyan]{algo}[/cyan] - [magenta]{lang}[/magenta]...", total=None)
+                # Initial task description
+                desc_tpl = f"[bold cyan]{algo}[/bold cyan] ([magenta]{lang}[/magenta])"
+                task_id = progress.add_task(f"{desc_tpl}: Starting...", total=None)
                 
-                # Suppress stdout from runner to keep UI clean, unless there's an error?
-                # For now, let's just run it. The runner might print "Compiling..."
-                # We can capture that if we wanted to be very clean, but let's leave it simple for now.
+                def update_status(msg):
+                    # update progress description
+                    progress.update(task_id, description=f"{desc_tpl}: {msg}")
                 
-                stats = runner.run_benchmark(lang, full_path, iterations=args.iter)
+                stats = runner.run_benchmark(lang, full_path, iterations=args.iter, on_status=update_status)
                 progress.remove_task(task_id)
                 
                 if stats:
