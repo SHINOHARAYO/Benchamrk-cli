@@ -1,5 +1,5 @@
 use std::env;
-use std::iter;
+
 struct Lcg {
     state: u64,
 }
