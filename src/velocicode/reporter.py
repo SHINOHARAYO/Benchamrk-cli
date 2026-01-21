@@ -1,34 +1,79 @@
+from rich import print
+from rich.table import Table
+from rich.console import Console
+
 def print_table(results):
-    """
-    Prints the benchmark results in a formatted table.
-    results: list of dicts with keys: language, benchmark, mean, min, max
-    """
     if not results:
-        print("No results to display.")
+        print("[yellow]No results to display[/yellow]")
         return
-
-    headers = ["Benchmark", "Language", "Mean (s)", "Min (s)", "Max (s)"]
-    # calculate widths
-    widths = [len(h) for h in headers]
+    
+    console = Console()
+    
+    # 1. Group by Benchmark
+    grouped = {}
     for r in results:
-        widths[0] = max(widths[0], len(r['benchmark']))
-        widths[1] = max(widths[1], len(r['language']))
-        widths[2] = max(widths[2], len(f"{r['mean']:.4f}"))
-        widths[3] = max(widths[3], len(f"{r['min']:.4f}"))
-        widths[4] = max(widths[4], len(f"{r['max']:.4f}"))
+        bench_name = r['benchmark']
+        if bench_name not in grouped:
+            grouped[bench_name] = []
+        grouped[bench_name].append(r)
+        
+    # 2. Process each group
+    for bench_name, group_results in grouped.items():
+        # Sort by mean time (fastest first)
+        group_results.sort(key=lambda x: x['mean'])
+        
+        # Determine baseline (fastest)
+        if not group_results:
+            continue
+            
+        fastest_time = group_results[0]['mean']
+        
+        # Create Table
+        table = Table(
+            title=f"Benchmark: [bold cyan]{bench_name}[/bold cyan]",
+            show_header=True,
+            header_style="bold white",
+            border_style="blue",
+            expand=True
+        )
+        
+        table.add_column("Rank", style="bold yellow", justify="center", width=4)
+        table.add_column("Language", style="magenta", width=12)
+        table.add_column("Time (s)", justify="right")
+        table.add_column("Relative", justify="right")
+        table.add_column("Min (s)", style="dim", justify="right")
+        table.add_column("Max (s)", style="dim", justify="right")
 
-    # create format string
-    fmt = " | ".join(f"{{:<{w}}}" for w in widths)
-    separator = "-+-".join("-" * w for w in widths)
-
-    print(fmt.format(*headers))
-    print(separator)
-
-    for r in results:
-        print(fmt.format(
-            r['benchmark'],
-            r['language'],
-            f"{r['mean']:.4f}",
-            f"{r['min']:.4f}",
-            f"{r['max']:.4f}"
-        ))
+        for i, r in enumerate(group_results):
+            # Rank
+            rank_display = str(i + 1)
+            if i == 0:
+                rank_display = "🥇"
+            elif i == 1:
+                rank_display = "🥈"
+            elif i == 2:
+                rank_display = "🥉"
+            
+            # Relative Speed
+            rel_speed = r['mean'] / fastest_time
+            rel_str = f"{rel_speed:.2f}x"
+            
+            # Colorize Relative Speed
+            if rel_speed < 1.05:
+                rel_style = "[green]"
+            elif rel_speed < 5.0:
+                rel_style = "[yellow]"
+            else:
+                rel_style = "[red]"
+            
+            table.add_row(
+                rank_display,
+                r['language'],
+                f"{r['mean']:.4f}",
+                f"{rel_style}{rel_str}[/]",
+                f"{r['min']:.4f}",
+                f"{r['max']:.4f}"
+            )
+            
+        console.print(table)
+        console.print("") # Newline between tables
