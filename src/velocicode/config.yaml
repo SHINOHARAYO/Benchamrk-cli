@@ -8,7 +8,16 @@ languages:
     compile: "rustc -O {source} -o {out}"
     run: "{out}"
   javascript:
-    run: "node {source}"
+    run: "node main.js"
+
+  java:
+    compile: "javac Main.java"
+    run: "java Main"
+
+  csharp:
+    # Assumes a .csproj exists in the directory
+    compile: "dotnet build -c Release"
+    run: "dotnet run -c Release --no-build"
   go:
     compile: "go build -o {out} {source}"
     run: "{out}"

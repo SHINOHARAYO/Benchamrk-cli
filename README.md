@@ -4,7 +4,7 @@
 
 ## Features ✨
 
-- **Multi-Language Support**: Benchmarks **Python**, **C++**, **Rust**, **Go**, and **JavaScript** (Node.js).
+- **Multi-Language Support**: Benchmarks **Python**, **C++**, **Rust**, **Go**, **JavaScript** (Node.js), **Java**, and **C#** (.NET).
 - **Smart Execution**:
   - **System Info**: Auto-detects your CPU, RAM, and OS.
   - **Dependency Check**: Automatically checks for compilers and skips missing languages.
@@ -69,6 +69,8 @@ velocicode check
 - `rustc` (for Rust)
 - `go` (for Go)
 - `node` (for JavaScript)
+- `javac` (for Java)
+- `dotnet` (for C#)
 
 ## License
 

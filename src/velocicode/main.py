@@ -143,7 +143,9 @@ def main():
                     'cpp': 'main.cpp',
                     'rust': 'main.rs',
                     'go': 'main.go',
-                    'javascript': 'main.js'
+                    'javascript': 'main.js',
+                    'java': 'Main.java',
+                    'csharp': 'Program.cs'
                 }
                 expected_file = ext_map.get(lang)
                 if not expected_file:
