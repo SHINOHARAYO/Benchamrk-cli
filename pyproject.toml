@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Velocicode"
-version = "0.7.0"
+version = "0.7.1"
 description = "A CLI tool for programming language speed benchmarks"
 authors = [
-  { name="Code Agent", email="agent@example.com" },
+  { name="Zhaoyang Li", email="zhaoyangli6969@gmail.com" },
 ]
 readme = "README.md"
 requires-python = ">=3.7"
