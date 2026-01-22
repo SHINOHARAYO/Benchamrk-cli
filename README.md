@@ -12,6 +12,7 @@
   - `primes` (Sieve of Eratosthenes)
 - **Smart Execution**:
   - **System Info**: Auto-detects your CPU, RAM, and OS.
+  - **Memory Benchmarking (New)**: Tracks **Peak RAM** usage for every run. 🧠
   - **Dependency Check**: Automatically checks for compilers and skips missing languages.
 - **Premium UI**:
   - Beautiful terminal output using the **Rich** library.

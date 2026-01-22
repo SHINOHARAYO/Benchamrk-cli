@@ -43,6 +43,7 @@ def print_table(results):
         table.add_column("Relative", justify="right")
         table.add_column("Min (s)", style="dim", justify="right")
         table.add_column("Max (s)", style="dim", justify="right")
+        table.add_column("Max RAM", style="cyan", justify="right")
 
         for i, r in enumerate(group_results):
             # Rank
@@ -66,13 +67,23 @@ def print_table(results):
             else:
                 rel_style = "[red]"
             
+            # Memory Formatting
+            mem_bytes = r.get('max_memory', 0)
+            if mem_bytes > 1024 * 1024:
+                mem_str = f"{mem_bytes / (1024*1024):.1f} MB"
+            elif mem_bytes > 1024:
+                mem_str = f"{mem_bytes / 1024:.1f} KB"
+            else:
+                mem_str = f"{mem_bytes} B"
+            
             table.add_row(
                 rank_display,
                 r['language'],
                 f"{r['mean']:.4f}",
                 f"{rel_style}{rel_str}[/]",
                 f"{r['min']:.4f}",
-                f"{r['max']:.4f}"
+                f"{r['max']:.4f}",
+                mem_str
             )
             
         console.print(table)
