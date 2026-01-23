@@ -54,8 +54,8 @@ class BenchmarkRunner:
             log(f"Running iteration {i+1}/{iterations}...")
             start = time.time()
             try:
-                # For Java and C#, we need to run in the source directory
-                cwd = os.path.dirname(source_path) if language in ['java', 'csharp'] else None
+                # Always run in the source directory for consistency
+                cwd = os.path.dirname(source_path)
                 
                 process = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, cwd=cwd)
                 

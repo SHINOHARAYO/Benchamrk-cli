@@ -10,6 +10,10 @@
   - `matrix_mul` (Floating point & Cache)
   - `quicksort` (Memory & Sorting)
   - `primes` (Sieve of Eratosthenes)
+  - **New in v0.8.0**:
+    - `string_concat` (String Optimization) 🧵
+    - `json_parse` (Data Processing) 📄
+    - `regex_redact` (Text Processing) 🔍
 - **Smart Execution**:
   - **System Info**: Auto-detects your CPU, RAM, and OS.
   - **Memory Benchmarking (New)**: Tracks **Peak RAM** usage for every run. 🧠
