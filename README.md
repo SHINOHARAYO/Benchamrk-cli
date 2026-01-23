@@ -32,6 +32,14 @@
 pip install velocicode
 ```
 
+To install compilers for all supported languages (Python, C++, Rust, Go, Node.js, Java, .NET), run:
+
+```bash
+velocicode deps
+```
+
+This will print the exact install command for your OS (Ubuntu, Fedora, macOS, Windows).
+
 ## Usage
 
 ### 1. Run Benchmarks

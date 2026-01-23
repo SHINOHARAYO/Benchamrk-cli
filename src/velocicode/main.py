@@ -71,7 +71,7 @@ def discover_benchmarks():
 
 def main():
     parser = argparse.ArgumentParser(description="Velocicode - Programming Language Speed Benchmark Tool")
-    parser.add_argument("action", choices=["run", "list", "check"], help="Action to perform")
+    parser.add_argument("action", choices=["run", "list", "check", "deps"], help="Action to perform")
     parser.add_argument("--filter-algo", help="Filter by specific algorithm name")
     parser.add_argument("--filter-lang", help="Filter by specific languages (comma separated)")
     parser.add_argument("--iter", type=int, default=5, help="Number of iterations per benchmark")
@@ -84,6 +84,39 @@ def main():
     
     if args.action == "check":
         check_dependencies(config)
+        return
+
+    if args.action == "deps":
+        import platform
+        system = platform.system().lower()
+        
+        rprint(Panel("Dependency Installation Guide", style="bold green"))
+        print("\nTo install all necessary compilers and runtimes, run the following command for your OS:\n")
+        
+        if system == "linux":
+            # Check for debian/ubuntu vs fedora/rhel
+            # Simple heuristic
+            is_debian = os.path.exists("/etc/debian_version")
+            if is_debian:
+                rprint("[bold cyan]Ubuntu/Debian:[/bold cyan]")
+                print("sudo apt update && sudo apt install -y build-essential python3-dev golang rustc nodejs default-jdk dotnet-sdk-8.0")
+            else:
+                rprint("[bold cyan]Fedora/RHEL:[/bold cyan]")
+                print("sudo dnf install -y gcc gcc-c++ python3-devel golang rust nodejs java-latest-openjdk-devel dotnet-sdk-8.0")
+                
+        elif system == "darwin": # macOS
+            rprint("[bold cyan]macOS (Homebrew):[/bold cyan]")
+            print("brew install gcc python go rust node java dotnet")
+            
+        elif system == "windows":
+            rprint("[bold cyan]Windows (Winget):[/bold cyan]")
+            print("winget install Python.Python Microsoft.DotNet.SDK.8 Oracle.JDK.21 GoLang.Go Rustlang.Rustlang OpenJS.NodeJS")
+            
+        else:
+            rprint(f"[yellow]Unknown OS: {system}[/yellow]")
+            print("Please install: Python 3, GCC/Clang, Go, Rust, Node.js, Java JDK, .NET SDK")
+            
+        rprint("\n[dim]Note: ARM64/Apple Silicon is fully supported.[/dim]")
         return
 
     runner = BenchmarkRunner(config)
@@ -204,7 +237,8 @@ def interactive_menu():
     print("2. Run Specific Algorithm")
     print("3. Run Specific Language")
     print("4. Check Dependencies")
-    print("5. Exit")
+    print("5. Show Install Commands")
+    print("6. Exit")
     
     choice = input("Enter choice: ").strip()
     
@@ -228,6 +262,8 @@ def interactive_menu():
     elif choice == '4':
         return ["check"]
     elif choice == '5':
+        return ["deps"]
+    elif choice == '6':
         sys.exit(0)
     else:
         print("Invalid choice.")
