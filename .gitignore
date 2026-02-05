@@ -12,4 +12,26 @@ bin/
 runner_*
 *.exe
 *.o
+
+# Rust
+target/
+Cargo.lock
+
+# C#
+obj/
+bin/
+
+# Java
 *.class
+*.jar
+*.war
+*.ear
+
+# Node
+node_modules/
+package-lock.json
+
+# C++
+*.o
+*.obj
+

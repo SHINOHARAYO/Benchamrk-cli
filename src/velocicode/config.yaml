@@ -11,7 +11,7 @@ languages:
     run: "node {source}"
 
   java:
-    compile: "javac Main.java"
+    compile: "javac --release 21 Main.java"
     run: "java Main"
 
   csharp:

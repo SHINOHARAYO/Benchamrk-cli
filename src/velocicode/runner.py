@@ -30,11 +30,42 @@ class BenchmarkRunner:
         # Compile if necessary
         try:
             compile_cmd_tpl = lang_config.get('compile')
+            
+            # Special handling for Rust with Cargo
+            if language == 'rust' and os.path.exists(os.path.join(os.path.dirname(source_path), 'Cargo.toml')):
+                log("Detected Cargo.toml, building with cargo...")
+                cwd = os.path.dirname(source_path)
+                subprocess.check_call("cargo build --release --quiet", shell=True, cwd=cwd)
+                compile_cmd_tpl = None # Handled above
+                run_cmd_tpl = "cargo run --release --quiet"
+                lang_config = lang_config.copy()
+                lang_config['run'] = run_cmd_tpl
+
+            # Special handling for Java with Maven
+            if language == 'java' and os.path.exists(os.path.join(os.path.dirname(source_path), 'pom.xml')):
+                log("Detected pom.xml, building with Maven...")
+                cwd = os.path.dirname(source_path)
+                # Compile
+                subprocess.check_call("mvn package -DskipTests --quiet", shell=True, cwd=cwd)
+                compile_cmd_tpl = None
+                
+                # Run
+                # Find the jar in target/
+                target_dir = os.path.join(cwd, "target")
+                jar_files = [f for f in os.listdir(target_dir) if f.endswith(".jar") and "original" not in f]
+                if jar_files:
+                    jar_path = os.path.join("target", jar_files[0])
+                    run_cmd_tpl = f"java -jar {jar_path}"
+                    lang_config = lang_config.copy()
+                    lang_config['run'] = run_cmd_tpl
+                else:
+                    raise FileNotFoundError("Could not find built JAR file in target/ directory")
+
             if compile_cmd_tpl:
                 cmd = compile_cmd_tpl.format(source=source_path, out=bin_path)
                 log(f"Compiling...")
-                # For Java and C#, we need to run compile in the source directory
-                cwd = os.path.dirname(source_path) if language in ['java', 'csharp'] else None
+                # Run compile in the source directory for all languages to resolve relative files/includes consistently
+                cwd = os.path.dirname(source_path)
                 subprocess.check_call(cmd, shell=True, cwd=cwd)
             else:
                 # No compilation needed
