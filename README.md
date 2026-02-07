@@ -10,10 +10,13 @@
   - `matrix_mul` (Floating point & Cache)
   - `quicksort` (Memory & Sorting)
   - `primes` (Sieve of Eratosthenes)
-  - **New in v0.8.0**:
-    - `string_concat` (String Optimization) 🧵
-    - `json_parse` (Data Processing) 📄
-    - `regex_redact` (Text Processing) 🔍
+  - `string_concat` (String Optimization) 🧵
+  - `json_parse` (Data Processing) 📄
+  - `regex_redact` (Text Processing) 🔍
+  - **New in v0.9.0 (Preview)**:
+    - `async_io` (Async Task Overhead) ⏱️
+    - `sqlite_ops` (Database Insert/Select) 💾
+    - `http_server` (HTTP Throughput) 🌐
 - **Smart Execution**:
   - **System Info**: Auto-detects your CPU, RAM, and OS.
   - **Memory Benchmarking (New)**: Tracks **Peak RAM** usage for every run. 🧠
