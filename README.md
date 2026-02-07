@@ -13,7 +13,7 @@
   - `string_concat` (String Optimization) 🧵
   - `json_parse` (Data Processing) 📄
   - `regex_redact` (Text Processing) 🔍
-  - **New in v0.9.0 (Preview)**:
+  - **New in v0.9.0**:
     - `async_io` (Async Task Overhead) ⏱️
     - `sqlite_ops` (Database Insert/Select) 💾
     - `http_server` (HTTP Throughput) 🌐
