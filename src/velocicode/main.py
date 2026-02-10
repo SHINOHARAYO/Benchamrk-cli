@@ -15,6 +15,19 @@ from rich import print as rprint
 
 console = Console()
 
+BENCHMARK_DESCRIPTIONS = {
+    "fibonacci": "Recursion & CPU intensive",
+    "matrix_mul": "Floating point operations & Cache locality",
+    "quicksort": "Memory allocation & Sorting algorithms",
+    "primes": "Prime number calculation (Sieve)",
+    "string_concat": "String manipulation & memory allocation",
+    "json_parse": "JSON parsing & serialization performance",
+    "regex_redact": "Regular expression compilation & matching",
+    "async_io": "Asynchronous task scheduling overhead",
+    "sqlite_ops": "SQLite database Insert/Select performance",
+    "http_server": "HTTP server throughput (Requests/sec)"
+}
+
 def check_dependencies(config, verbose=True):
     if verbose:
         rprint(Panel("Checking System Dependencies", style="bold blue"))
@@ -133,8 +146,10 @@ def main():
 
     if args.action == "list":
         print("Available benchmarks:")
+        max_len = max(len(a) for a in algos) if algos else 0
         for a in algos:
-            print(f" - {a}")
+            desc = BENCHMARK_DESCRIPTIONS.get(a, "No description available")
+            print(f" - {a:<{max_len}} : {desc}")
         return
 
     if args.action == "run":
